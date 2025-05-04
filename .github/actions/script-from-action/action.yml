@@ -1,0 +1,9 @@
+name: "Script action"
+description: "Tests creating a script runnable both from action and locally"
+
+runs:
+  using: "composite"
+  steps:
+    - name: Run
+      shell: bash
+      run: ../../scripts/script.sh

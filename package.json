@@ -6,6 +6,9 @@
   "repository": "git@github.com:alexyk/workflows.git",
   "license": "MIT",
 	"scripts": {
-		"ci": ".github/workflows/scripts/run.sh"
+		"start": "node . | less -SN",
+		"ci-demo-output": ".github/scripts/output.sh",
+		"ci-demo-script": ".github/scripts/script.sh",
+		"ci-run": ".github/scripts/run.sh"
 	}
 }

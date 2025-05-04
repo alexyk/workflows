@@ -1,0 +1,13 @@
+name: "Output action"
+description: "Tests output from action"
+outputs:
+  RESULT:
+    description: "The result"
+    value: ${{ steps.main.outputs.RES }}
+
+runs:
+  using: "composite"
+  steps:
+    - name: Run
+      shell: bash
+      run: ../../scripts/output.sh

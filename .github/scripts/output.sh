@@ -1,0 +1,4 @@
+#!/bin/bash
+
+echo "HELLO=THERE" > $GITHUB_OUTPUT
+echo "HELLO2=THERE2" > $GITHUB_OUTPUT
