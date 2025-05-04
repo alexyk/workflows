@@ -1,5 +1,4 @@
 name: Vars Demo
-description: Experimenting with variables
 on:
   workflow_dispatch: 
   push:

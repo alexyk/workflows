@@ -1,5 +1,4 @@
 name: Common Demo
-description: "Demonstrating continue-on-error"
 on:
   workflow_dispatch:
   # push:

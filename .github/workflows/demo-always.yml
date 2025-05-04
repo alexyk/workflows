@@ -1,5 +1,4 @@
 name: Always Demo
-description: "Demonstrating always()"
 on:
   workflow_dispatch: 
   # workflow_call:
@@ -9,13 +8,23 @@ on:
   #   branches: [ "main" ]
 
 jobs:
-  build:
+  demo-always:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
     - name: Always Demo 1
-      continue-on-error: true
       run: exit 1
     - name: Always Demo 2
       if: always()
       run: echo "testing"
+  demo-continue:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - name: Continue Demo 1
+      continue-on-error: true
+      run: exit 1
+    - name: Continue Demo 2
+      if: always()
+      run: echo "testing"
+  
