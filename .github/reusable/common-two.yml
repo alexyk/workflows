@@ -1,0 +1,21 @@
+name: Common Workflow 2
+
+on:
+  workflow_call:
+    inputs:
+      HELLO:
+        required: true
+        default: ''
+    outputs:
+      RESULT: ${{ steps.result.outputs.RES }}
+
+jobs:
+  show:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - name: Show
+      continue-on-error: true
+      run: echo ${{ inputs.HELLO }}
+    - run: echo "RES=some result" >> $GITHUB_OUTPUT
+      id: result

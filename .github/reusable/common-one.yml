@@ -1,0 +1,17 @@
+name: Common Workflow 1
+
+on:
+  workflow_call:
+    inputs:
+      HELLO:
+        required: true
+        default: ''
+
+jobs:
+  show:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - name: Show
+      continue-on-error: true
+      run: echo ${{ inputs.HELLO }}
