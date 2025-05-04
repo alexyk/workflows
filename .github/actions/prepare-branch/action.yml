@@ -1,0 +1,13 @@
+name: "Prepare Branch"
+description: "Prepares a branch"
+inputs:
+  BRANCH:
+    required: true
+    description: "The branch to prepare"
+
+runs:
+  using: "composite"
+  steps:
+    - name: Run
+      shell: bash
+      run: git checkout ${{ inputs.BRANCH }} && git log -3 --oneline

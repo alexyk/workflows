@@ -1,0 +1,44 @@
+name: Release Branch
+on:
+  workflow_dispatch: 
+  push:
+    branches: [ "deploy" ]
+
+jobs:
+  step-one:
+    env:  
+      BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
+      CI_COMMIT_AUTHOR: "${{ github.triggering_actor }}"
+      CI_COMMIT_EMAIL: "${{ github.actor_id }}+${{ github.actor }}@users.noreply.github.com"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: |
+          DATE=$(date +%Y-%m-%d_%H-%M-%S)
+          BRANCH=bulids/$BRANCH_NAME-$DATE
+          TAG=bulids_$BRANCH_NAME-$DATE
+          git config --global user.name "${{ env.CI_COMMIT_AUTHOR }}"
+          git config --global user.email "<${{ env.CI_COMMIT_EMAIL }}>"
+          git switch -c $BRANCH
+          cat 1 > 1
+          cat 2 > 2
+          git add 1
+          git commit -m 'Test commit'
+          git add 2
+          git commit -m 'Test commit 2'
+          git push origin HEAD:$BRANCH
+          # git tag $TAG
+          # git push origin tag $TAG
+          echo "BRANCH=$BRANCH" > $GITHUB_OUTPUT
+        id: the-branch
+    outputs:
+      BRANCH: ${{ steps.the-branch.outputs.BRANCH }}
+
+  step-two:
+    runs-on: ubuntu-latest
+    needs: [step-one]
+    env:
+      BRANCH: ${{ needs.step-one.outputs.BRANCH }}
+    steps:
+      - uses: actions/checkout@v4
+      - run: ./.github/actions/prepare-branch
