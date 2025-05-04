@@ -1,0 +1,11 @@
+{
+  "name": "workflows",
+  "version": "0.0.1",
+  "description": "Workflows POCs",
+  "main": "index.js",
+  "repository": "git@github.com:alexyk/workflows.git",
+  "license": "MIT",
+	"scripts": {
+		"ci": ".github/workflows/scripts/run.sh"
+	}
+}
