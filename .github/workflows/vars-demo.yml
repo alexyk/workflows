@@ -1,0 +1,27 @@
+name: Vars Demo
+description: Experimenting with variables
+on:
+  workflow_dispatch: 
+  push:
+    branches: [ "main" ]
+  # pull_request:
+  #   branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      VAR1: true
+    steps:
+    - uses: actions/checkout@v4
+    - name: Var Demo
+      run: |
+        echo "Var1(a): " ${{ env.VAR1 }}
+        echo "Var1(b): ${{ env.VAR1 }}"
+        if ${{ env.VAR1 }}; then
+          echo "Yes 1"
+        fi
+        ${{ env.VAR1 }} && echo 'Yes 2'
+        if ${{ env.VAR1 == 'true' }}; then
+          echo "Yes 3"
+        fi
