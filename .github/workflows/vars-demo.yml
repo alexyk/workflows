@@ -11,7 +11,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     env:
-      VAR1: true
+      VAR1: false
     steps:
     - uses: actions/checkout@v4
     - name: Var Demo
