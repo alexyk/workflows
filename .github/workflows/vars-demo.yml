@@ -1,6 +1,17 @@
-name: Vars Demo
+name: 🎶 Vars Demo
+run-name: 🎶 Demonstrating variables 3
 on:
-  workflow_dispatch: 
+  workflow_dispatch:
+    inputs:
+      TST_INPUT:
+        description: "Test input"
+        required: false
+        default: ''
+        type: choice
+        options:
+          - "none"
+          - 'test1'
+          - 'test2'
   # push:
   #   branches: [ "main" ]
   # pull_request:
@@ -10,13 +21,20 @@ jobs:
   build:
     runs-on: ubuntu-latest
     env:
-      VAR1: false
+      VAR1: true
+      VAR2: ${{ inputs.TST_INPUT == 'test1' && format('v1.{0}', inputs.TST_INPUT) || 'normal' }}
     steps:
     - uses: actions/checkout@v4
     - name: Var Demo
       run: |
+        # testing variables
+        VAR3="v2.${{ inputs.TST_INPUT }}"
         echo "Var1(a): " ${{ env.VAR1 }}
         echo "Var1(b): ${{ env.VAR1 }}"
+        echo "Var1(c): $VAR1"
+        echo "Input: ${{ inputs.TST_INPUT }}"
+        echo "Var2: $VAR2"
+        echo "Var3: $VAR3"
         if ${{ env.VAR1 }}; then
           echo "Yes 1"
         fi
