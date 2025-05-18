@@ -1,0 +1,93 @@
+name: Debug
+
+on:
+  workflow_dispatch:
+    inputs:
+      SAVE:
+          required: false
+          type: boolean
+          default: false
+  workflow_call:
+    inputs:
+      SAVE:
+        required: false
+        type: boolean
+        default: false
+  push: 
+    branches: dev
+
+jobs:
+  dump-env-data:
+    runs-on: ubuntu-latest
+    env:
+      DEBUG: 'debug.json'
+    steps:
+      - run: echo -e "Show Inputs:""\nSAVE:"" '"${{ inputs.SAVE }}"'\n"
+
+      - name: Start file
+        run: echo '{' > $DEBUG
+
+      - name: GitHub vars
+        env:
+          VARS: ${{ toJson(vars) }}
+        run: echo -e '  "Vars":'$VARS',' >> $DEBUG
+
+      - name: GitHub secrets
+        env:
+          SECRETS: ${{ toJson(secrets) }}
+        run: echo -e '  "Secrets":'$SECRETS',' >> $DEBUG
+
+      - name: GitHub context
+        env:
+          GITHUB_CONTEXT: ${{ toJson(github) }}
+        run: echo -e '  "GitHub Context":'$GITHUB_CONTEXT',' >> $DEBUG
+        if: ${{ github }}
+
+      - name: runner context
+        env:
+          RUNNER_CONTEXT: ${{ toJson(runner) }}
+        run: echo -e '  "Runner":' $RUNNER_CONTEXT',' >> $DEBUG
+        if: ${{ runner }}
+
+      - name: job context
+        env:
+          JOB_CONTEXT: ${{ toJson(job) }}
+        run: echo -e '  "Job":'$JOB_CONTEXT',' >> $DEBUG
+        if: ${{ job }}
+
+      - name: steps context
+        env:
+          STEPS_CONTEXT: ${{ toJson(steps) }}
+        run: echo -e '  "Steps":'$STEPS_CONTEXT',' >> $DEBUG
+        if: ${{ steps }}
+
+      - name: strategy context
+        env:
+          STRATEGY_CONTEXT: ${{ toJson(strategy) }}
+        run: echo -e '  "Strategy":'$STRATEGY_CONTEXT',' >> $DEBUG
+        if: ${{ strategy }}
+
+      - name: matrix context
+        env:
+          MATRIX_CONTEXT: ${{ toJson(matrix) }}
+        run: echo -e '  "Matrix":'$MATRIX_CONTEXT',' >> $DEBUG
+        if: ${{ matrix }}
+
+      - name: Show default environment variables
+        run: |
+          echo '  "The job_id is": "'$GITHUB_JOB'",'  >> $DEBUG  # reference the default environment variables
+          echo '  "The id of this action is": "'$GITHUB_ACTION'",' >> $DEBUG # reference the default environment variables
+          echo '  "The run id is": "'$GITHUB_RUN_ID'",' >> $DEBUG
+          echo '  "The GitHub Actor username is": "'$GITHUB_ACTOR'",' >> $DEBUG
+          echo '  "GitHub SHA": "'$GITHUB_SHA'"' >> $DEBUG
+
+      - name: End file
+        run: echo '}' >> $DEBUG
+
+      - name: Upload diff as artifact
+        uses: actions/upload-artifact@v4
+        if: ${{ inputs.SAVE || inputs.SAVE == '' }}
+        with:
+          name: ${{ env.DEBUG }}
+          path: ${{ env.DEBUG }}
+          retention-days: 1
