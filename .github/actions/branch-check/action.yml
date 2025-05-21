@@ -1,0 +1,9 @@
+name: "Branch check"
+description: "Checking branch"
+
+runs:
+  using: "composite"
+  steps:
+    - name: Run
+      shell: bash
+      run: ../../scripts/branch-check.sh
